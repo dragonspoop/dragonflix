@@ -7,7 +7,6 @@ const Trending = ({
   title,
   posterPath,
 }: TrendProps) => {
-  const imageUrl = `https://image.tmdb.org/t/p/w500${posterPath}`;
 
   return (
     // Inside your Trending component (e.g., in a file named Trending.jsx)
