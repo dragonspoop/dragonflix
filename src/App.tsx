@@ -1,3 +1,4 @@
+
 import Card from "./components/Card";
 import Navbar from "./components/Navbar";
 import Search from "./components/Search";
@@ -16,7 +17,7 @@ interface Movie {
 const BASE_URL = "https://api.themoviedb.org/3";
 
 const App = () => {
-  const [recentSearchs, setRecentSearches] = useState<string[]>([])
+  const [recentSearchs, setRecentSearches] = useState<string[]>([]);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
@@ -44,8 +45,7 @@ const App = () => {
   const searchMovies = async () => {
     try {
       const q = searchTerm.trim();
-      q!=''?recentSearchs.push(q):
-      setRecentSearches(recentSearchs)
+      q != "" ? recentSearchs.push(q) : setRecentSearches(recentSearchs);
       if (!q) {
         // clear previous search results if query is empty
         setSearchResults([]);
@@ -67,10 +67,40 @@ const App = () => {
   useEffect(() => {
     fetchMovies();
   }, []);
+
   return (
     <>
       <Navbar></Navbar>
-      <Trending />
+      <section className="container mx-auto px-4 py-8">
+    
+    {/* Refined Heading */}
+    <div className="flex items-center space-x-3 mb-6">
+        <h2 className="text-2xl font-extrabold text-gray-100 border-l-4 border-red-600 pl-4">
+            Trending Movies
+        </h2>
+        {/* Optional: Add a simple icon for flair */}
+        <span className="text-red-600 text-3xl">🔥</span>
+    </div>
+
+    {/* Movie Grid Container */}
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        
+        {/* Map through your movies here */}
+        {movies.length > 0 && [...Array(6)].map((_, i) => {
+            const randomIndex = Math.floor(Math.random() * movies.length);
+            const movie = movies[randomIndex];
+            return (
+                <Trending
+                    key={`${movie.id}-${i}`}
+                    title={movie.title}
+                    posterPath={movie.poster_path}
+                    // You might want to pass more data like rating or genre
+                />
+            );
+        })}
+        
+    </div>
+</section>
       <Search
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -80,7 +110,13 @@ const App = () => {
 
       {searchResults && searchResults.length > 0 && (
         <div>
-          <div className="m-5 mt-2 mb-2 text-3xl pl-7 p-1 rounded-md border">Search results</div>
+          <div className="flex items-center space-x-3 mb-6">
+        <h2 className="text-2xl font-extrabold text-gray-100 border-l-4 border-red-600 pl-4">
+            Search Results
+        </h2>
+        {/* Optional: Add a simple icon for flair */}
+        <span className="text-red-600 text-3xl">🔥</span>
+    </div>
           <div className="justify-center w-full flex flex-wrap gap-4 p-4">
             {searchResults.map((movie) => (
               <Card
@@ -94,7 +130,13 @@ const App = () => {
           </div>
         </div>
       )}
-      <div className=" m-5 mt-2 mb-2 text-3xl pl-7 p-1 rounded-md border">Movies</div>
+      <div className="flex items-center space-x-3 mb-6">
+        <h2 className="text-2xl font-extrabold text-gray-100 border-l-4 border-red-600 pl-4">
+            Movies
+        </h2>
+        {/* Optional: Add a simple icon for flair */}
+        <span className="text-red-600 text-3xl">🔥</span>
+    </div>
       <div className="justify-center w-full flex flex-wrap gap-4">
         {movies && movies.length > 0 ? (
           movies.map((movie) => (
